@@ -1,0 +1,59 @@
+version: "2.4"
+services:
+  pingdirectory:
+    image: pingidentity/pingdirectory:2009-7.3.0.7
+    env_file:
+      - ${HOME}/.pingidentity/devops
+    environment:
+      - LDAP_PORT=1389
+      - LDAPS_PORT=1636
+      - HTTP_PORT=1080
+      - HTTPS_PORT=1443
+      - JMX_PORT=1689
+      # - RMI_PORT=5690
+      # - ACTIVATION_PORT=5691
+      # - EXTERNAL_IP=127.0.0.1
+    ulimits:
+      nproc:
+        soft: 16384
+        hard: 16384
+      nofile:
+        soft: 65535
+        hard: 65535
+    mem_limit: 1g
+    memswap_limit: 1g
+    mem_swappiness: 0
+    tmpfs: /run/secrets
+    volumes:
+      - ${PWD}/pd-conf:/opt/in
+    ports:
+      # export the LDAP prot
+      - "5389:1389"
+      # export the LDAP TLS port
+      - "5636:1636"
+      # export the port for JMX traffic
+      - "5689:1689"
+      # export the  HTTPS port
+      - "5443:1443"
+      # expose the RMI port
+      # - "5690:5690"
+      # expose the activation port
+      # - "5691:5691"
+    # network_mode: host
+    networks:
+      - pingnet
+
+  pingdataconsole:
+    image: pingidentity/pingdataconsole:edge
+    environment:
+      - HTTP_PORT=6080
+      - HTTPS_PORT=6443
+    ports:
+      - "6080:6080"
+      - "6443:6443"
+    # network_mode: host
+    networks:
+      - pingnet
+
+networks:
+    pingnet:

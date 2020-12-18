@@ -1,0 +1,33 @@
+dsconfig set-global-configuration-prop \
+    --set allow-insecure-local-jmx-connections:true
+
+dsconfig create-web-application-extension \
+    --extension-name jolokia \
+    --set base-context-path:/jolokia \
+    --set war-file:/opt/out/instance/webapps/jolokia-war-unsecured-1.6.2.war
+
+dsconfig set-connection-handler-prop \
+    --handler-name "HTTPS Connection Handler" \
+    --add web-application-extension:jolokia \
+    --set enabled:false
+
+dsconfig set-connection-handler-prop \
+    --handler-name "HTTPS Connection Handler"  \
+    --set enabled:true
+
+dsconfig set-connection-handler-prop \
+    --handler-name "JMX Connection Handler"  \
+    --set enabled:true \
+    --set listen-port:${JMX_PORT}
+
+dsconfig set-connection-handler-prop \
+    --handler-name "HTTP Connection Handler"  \
+    --set listen-port:${HTTP_PORT}
+
+dsconfig set-connection-handler-prop \
+    --handler-name "LDAP Connection Handler"  \
+    --set enabled:false
+
+dsconfig set-connection-handler-prop \
+    --handler-name "LDIF Connection Handler"  \
+    --set enabled:false
