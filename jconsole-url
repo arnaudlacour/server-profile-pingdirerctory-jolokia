@@ -1,12 +1,11 @@
+# JMX URL
 service:jmx:rmi:///jndi/rmi://localhost:1689/com.unboundid.directory.server.protocols.jmx.client-unknown
 
+# tcpdump
 tcp.port == 5689 or tcp.port == 5006 or tcp.port == 5007 or tcp.port == 5098 or rmi.protocol
 
-docker run -it --network host --env-file ~/.pingidentity/devops -v /Users/arnaudlacour/Documents/wolters-kluwer/pd-conf:/opt/in pingidentity/pingdirectory:edge
 
-jconsole -J-Djava.class.path=/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/lib/jconsole.jar:/Users/arnaudlacour/Documents/wolters-kluwer/PingDirectory/lib/PingDirectory.jar
+docker run -it --network host --env-file ${HOME}/.pingidentity/devops -v ${HOME}/Documents/wolters-kluwer/pd-conf:/opt/in pingidentity/pingdirectory:edge
 
-4Rizona-beautiful
-
-bucket-name=test-klemay-s3-log-rotation-listener
-region=us-east-1
+# jconsole command
+jconsole -J-Djava.class.path=/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/lib/jconsole.jar:${HOME}/Documents/wolters-kluwer/PingDirectory/lib/PingDirectory.jar
