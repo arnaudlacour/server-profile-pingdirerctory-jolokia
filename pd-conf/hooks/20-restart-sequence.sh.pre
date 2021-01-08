@@ -3,7 +3,7 @@
 . "${HOOKS_DIR}"/pingcommon.lib.sh
 . "${HOOKS_DIR}"/nice.lib.sh
 
-_manageExtension="${SERVER_ROOT}"/bin/manage-extension
+_manageExtension="${SERVER_ROOT_DIR}"/bin/manage-extension
 
 printf "Processing extensions.\n"
 for _extension in "${STAGING_DIR}"/extensions/*.zip

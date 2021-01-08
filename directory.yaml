@@ -5,6 +5,7 @@ services:
     env_file:
       - ${HOME}/.pingidentity/devops
     environment:
+      - VERBOSE=true
       - LDAP_PORT=1389
       - LDAPS_PORT=1636
       - HTTP_PORT=1080
@@ -26,6 +27,7 @@ services:
     tmpfs: /run/secrets
     volumes:
       - ${PWD}/pd-conf:/opt/in
+      - /tmp/wk:/opt/out
     ports:
       # export the LDAP prot
       - "5389:1389"
