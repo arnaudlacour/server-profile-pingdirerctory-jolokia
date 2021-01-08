@@ -1,0 +1,14 @@
+dsconfig create-oauth-token-handler \
+    --handler-name Yes  \
+    --type third-party  \
+    --set extension-class:com.pingidentity.pd.oatv.Yes  \
+    --set extension-argument:user.id=uid=user.0,ou=people,dc=example,dc=com
+dsconfig set-connection-handler-prop \
+    --handler-name "HTTPS Connection Handler"  \
+    --set enabled:false
+dsconfig set-http-servlet-extension-prop \
+    --extension-name SCIM  \
+    --set oauth-token-handler:Yes
+dsconfig set-connection-handler-prop \
+    --handler-name "HTTPS Connection Handler"  \
+    --set enabled:true

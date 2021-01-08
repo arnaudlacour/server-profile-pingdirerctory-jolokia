@@ -1,0 +1,34 @@
+#!/usr/bin/env sh
+cat<<END_OF_STATUS
+
+Ping Identity Directory Server 7.3.0.7
+Build ID: 20200219162751Z
+Major Version: 7
+Minor Version: 3
+Point Version: 0
+Patch Version: 7
+Version Qualifier:
+Repository Path: 971f13e4a099ddf56037ceca8292644aee483bab
+Revision Number: v7.3.0.7-GA
+Fix IDs:
+Debug Build: false
+Build OS: Linux 3.10.0-1062.9.1.el7.x86_64 amd64
+Build User: centos
+Build Java Version: 1.8.0_181
+Build Java Vendor: Oracle Corporation
+Build JVM Version: 25.181-b13
+Build JVM Vendor: Oracle Corporation
+Berkeley DB JE Version: 7.5.12
+Jetty Version: 9.3.24.v20180605
+JZlib Version: 1.1.0
+SNMP4J Version: 1.11.0
+SNMP4J Agent Version: 1.4.0
+SNMP4J AgentX Version: 1.3.0
+SCIM SDK Version: 1.8.22 (20190422110032Z)
+SCIM 2 SDK Version: 2.3.2 rfc52a941a47b5120ec39a43c4cc977f82c41f8f6 (2019-10-07T15:27:48Z)
+Groovy Scripting Language Version: 2.5.7
+UnboundID LDAP SDK for Java Version: 4.0.12-raaefc59e0e6d110bf3a8e8a029adb776f6d2ce28
+UnboundID Server SDK Version: 7.3.0.7 (20200219162751Z)
+UnboundID Updater Library: 1.4.22
+
+END_OF_STATUS

@@ -5,7 +5,7 @@ services:
     env_file:
       - ${HOME}/.pingidentity/devops
     environment:
-      - VERBOSE=true
+      # - VERBOSE=true
       - LDAP_PORT=1389
       - LDAPS_PORT=1636
       - HTTP_PORT=1080

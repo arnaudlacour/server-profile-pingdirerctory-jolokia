@@ -4,7 +4,7 @@ dsconfig set-global-configuration-prop \
 dsconfig create-web-application-extension \
     --extension-name jolokia \
     --set base-context-path:/jolokia \
-    --set war-file:/opt/out/instance/webapps/jolokia-war-unsecured-1.6.2.war
+    --set war-file:${STAGING_DIR}/instance/webapps/jolokia-war-unsecured-1.6.2.war
 
 dsconfig set-connection-handler-prop \
     --handler-name "HTTPS Connection Handler" \
@@ -31,3 +31,4 @@ dsconfig set-connection-handler-prop \
 dsconfig set-connection-handler-prop \
     --handler-name "LDIF Connection Handler"  \
     --set enabled:false
+
