@@ -7,7 +7,7 @@ printf "Restoring original status CLI ... "
 mv "${SERVER_BITS_DIR}"/bin/status.orig "${SERVER_BITS_DIR}"/bin/status
 print_status ${?}
 
-"${INSTANCE_ROOT_DIR}"/bin/dsconfig set-connection-handler-prop \
+"${SERVER_ROOT_DIR}"/bin/dsconfig set-connection-handler-prop \
     --offline \
     --no-prompt \
     --handler-name "HTTPS Connection Handler"  \
