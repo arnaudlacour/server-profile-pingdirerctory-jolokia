@@ -15,5 +15,5 @@ do
     print_status ${_rc}
     test ${_rc} -ne 0 && exit 20
 done
-printf "All extensions processed."
+printf "All extensions processed.\n"
 exit 0

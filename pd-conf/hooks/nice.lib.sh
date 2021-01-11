@@ -1,12 +1,14 @@
 #!/usr/bin/env sh
 print_status ()
 {
-    if test ${1} -eq 0
+    _msg="Error"
+    _code="1"
+    if test "${1}" -eq 0
     then
-        printf '[\033[0;32m%s\033[0m]\n' "OK"
-    else
-        printf '[\033[0;31m%s\033[0m]\n' "Error"
+        _msg="OK"
+        _code="2"
     fi
+    printf '[\033[0;3%sm%s\033[0m]\n' "${_code}" "${_msg}"
     # shellcheck disable=SC2086
     return ${1}
 }

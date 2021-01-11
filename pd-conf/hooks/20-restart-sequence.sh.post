@@ -4,6 +4,5 @@
 . "${HOOKS_DIR}"/nice.lib.sh
 
 printf "Restoring original status CLI ... "
-mv /opt/server/bin/status.orig /opt/server/bin/status
-_rc=${?}
-print_status ${_rc}
+mv "${SERVER_BITS_DIR}"/bin/status.orig "${SERVER_BITS_DIR}"/bin/status
+print_status ${?}
