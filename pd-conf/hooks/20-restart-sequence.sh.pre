@@ -35,5 +35,12 @@ do
     fi
     # _extensionDir=$( unzip -l "${_extension}" | awk 'BEGIN{t=""}$1~/----/{t="true"}$1~/0/&&t~/true/ && $4~/\/$/ {t=""; sub(/\/$/,"",$4); print $4; exit;}' )
 done
+
+"${INSTANCE_ROOT_DIR}"/bin/dsconfig set-connection-handler-prop \
+    --offline \
+    --no-prompt \
+    --handler-name "HTTPS Connection Handler"  \
+    --set enabled:false
+
 printf "All extensions processed.\n"
 exit 0
