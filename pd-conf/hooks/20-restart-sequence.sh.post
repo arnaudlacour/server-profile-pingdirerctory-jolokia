@@ -4,11 +4,48 @@
 . "${HOOKS_DIR}"/nice.lib.sh
 
 printf "Restoring original status CLI ... "
-mv "${SERVER_BITS_DIR}"/bin/status.orig "${SERVER_BITS_DIR}"/bin/status
+test -f "${SERVER_BITS_DIR}"/bin/status.orig && mv "${SERVER_BITS_DIR}"/bin/status.orig "${SERVER_BITS_DIR}"/bin/status
 print_status ${?}
 
-"${SERVER_ROOT_DIR}"/bin/dsconfig set-connection-handler-prop \
+_manageExtension="${SERVER_ROOT_DIR}"/bin/manage-extension
+
+rm -rf "${SERVER_ROOT_DIR}"/extensions/*
+
+printf "Processing extensions.\n"
+for _extension in "${STAGING_DIR}"/extensions/*.zip
+do
+    printf "  - %s" "${_extension}"
+    # _zipTmp=$( mktemp -d )
+    # unzip -d "${_zipTmp}" "${_extension}" '*/*.jar'
+    # for _jar in "${_zipTmp}"/*/*.jar
+    # do
+    #     _jarTmp=$( mktemp -d     )
+    #     unzip -d "${_jarTmp}" "${_jar}" 'META-INF/MANIFEST.MF'
+    #     find "${_jarTmp}" -type f -name MANIFEST.MF -exec cat {} \;
+    #     rm -rf "${_jarTmp}"
+    # done
+    # rm -rf "${_zipTmp}"
+
+    printf "Installing extension [%s] ... \n" "${_extension}"
+    ${_manageExtension} --install "${_extension}" --no-prompt
+    _rc=${?}
+    print_status ${_rc}
+    test ${_rc} -ne 0 && exit 20
+    # if test ${_rc} -ne 0
+    # then
+    #     printf "Updating extension [%s] ... \n" "${_extension}"
+    #     ${_manageExtension} --update "${_extension}" --no-prompt
+    #     _rc=${?}
+    #     print_status ${_rc}
+    #     test ${_rc} -ne 0 && exit 20
+    # fi
+    # _extensionDir=$( unzip -l "${_extension}" | awk 'BEGIN{t=""}$1~/----/{t="true"}$1~/0/&&t~/true/ && $4~/\/$/ {t=""; sub(/\/$/,"",$4); print $4; exit;}' )
+done
+printf "All extensions processed.\n"
+
+printf "Applying configuration batch ... "
+"${SERVER_ROOT_DIR}"/bin/dsconfig \
     --offline \
-    --no-prompt \
-    --handler-name "HTTPS Connection Handler"  \
-    --set enabled:true
+    --batch-file ${STAGING_DIR}/config/on-restart/after-manage-profile.dsconfig \
+    --no-prompt
+print_status ${?}

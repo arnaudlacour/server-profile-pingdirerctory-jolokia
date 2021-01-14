@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+# shellcheck disable=SC1090
+. "${HOOKS_DIR}"/pingcommon.lib.sh
+. "${HOOKS_DIR}"/nice.lib.sh
+
+"${SERVER_ROOT_DIR}"/bin/dsconfig \
+    --offline \
+    --batch-file ${STAGING_DIR}/config/on-genesis/99-oatv.dsconfig \
+    --no-prompt
+print_status ${?}

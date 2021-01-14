@@ -7,6 +7,12 @@ print_status ()
     then
         _msg="OK"
         _code="2"
+    else
+        if test -n "${2}" && test "${1}" -eq "${2}"
+        then
+            _msg="Warning"
+            _code="3"
+        fi
     fi
     printf '[\033[0;3%sm%s\033[0m]\n' "${_code}" "${_msg}"
     # shellcheck disable=SC2086
