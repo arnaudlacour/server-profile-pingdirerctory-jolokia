@@ -5,7 +5,10 @@ services:
     env_file:
       - ${HOME}/.pingidentity/devops
     environment:
-      - VERBOSE=true
+      # - VERBOSE=true
+      - PING_CONTAINER_UID=1000
+      - PING_CONTAINER_GID=1000
+      - PING_CONTAINER_PRIVILEGED="false"
       - LDAP_PORT=1389
       - LDAPS_PORT=1636
       - HTTP_PORT=1080
@@ -60,6 +63,9 @@ services:
   pingdatasync:
     image: pingidentity/pingdatasync:edge
     environment:
+      - PING_CONTAINER_UID=1000
+      - PING_CONTAINER_GID=1000
+      - PING_CONTAINER_PRIVILEGED="false"
       - LDAP_PORT=1389
       - LDAPS_PORT=1636
       - HTTP_PORT=1080
