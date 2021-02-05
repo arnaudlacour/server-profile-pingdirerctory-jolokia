@@ -5,15 +5,20 @@
 
 _manageExtension="${SERVER_ROOT_DIR}"/bin/manage-extension
 
-printf "Processing extensions.\n"
-for _extension in "${STAGING_DIR}"/extensions/*.zip
-do
-    printf "  - %s" "${_extension}"
-    printf "Installing extension [%s] ... " "${_extension}"
-    ${_manageExtension} --install "${_extension}" --no-prompt
-    _rc=${?}
-    print_status ${_rc}
-    test ${_rc} -ne 0 && exit 20
-done
-printf "All extensions processed.\n"
+if test -d "${STAGING_DIR}"/extensions
+then
+    printf "Processing extensions.\n"
+    for _extension in "${STAGING_DIR}"/extensions/*.zip
+    do
+        printf "  - %s" "${_extension}"
+        printf "Installing extension [%s] ... " "${_extension}"
+        ${_manageExtension} --install "${_extension}" --no-prompt
+        _rc=${?}
+        print_status ${_rc}
+        test ${_rc} -ne 0 && exit 20
+    done
+    printf "All extensions processed.\n"
+else
+    printf "No extensions. Skipping ...\n"
+fi
 exit 0
