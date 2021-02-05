@@ -1,30 +1,19 @@
-    #!/usr/bin/env sh
-    printf '%s' "Backing up automatically generated Java properties ... "
-    mv "${SERVER_ROOT_DIR}/config/java.properties" "${SERVER_ROOT_DIR}/config/java.properties.from-setup"
-    if test ${?} -eq 0
-    then
-        printf '[\033[0;32m%s\033[0m]\n' "OK"
-    else
-        printf '[\033[0;31m%s\033[0m]\n' "Error"
-        exit 1
-    fi
+#!/usr/bin/env sh
 
-    printf '%s' "Replacing with JMX Java properties ... "
-    cp "${STAGING_DIR}/jmx.java.properties" "${SERVER_ROOT_DIR}/config/java.properties"
-    if test ${?} -eq 0
-    then
-        printf '[\033[0;32m%s\033[0m]\n' "OK"
-    else
-        printf '[\033[0;31m%s\033[0m]\n' "Error"
-        exit 1
-    fi
+printf '%s' "Backing up automatically generated Java properties ... "
+mv "${SERVER_ROOT_DIR}/config/java.properties" "${SERVER_ROOT_DIR}/config/java.properties.from-setup"
+_rc=${?}
+print_status ${_rc}
+test ${_rc} -ne 0 && exit 188
 
-    printf '%s' "Apply new Java properties ... "
-    "${SERVER_ROOT_DIR}/bin/dsjavaproperties"
-    if test ${?} -eq 0
-    then
-        printf '[\033[0;32m%s\033[0m]\n' "OK"
-    else
-        printf '[\033[0;31m%s\033[0m]\n' "Error"
-        exit 1
-    fi
+printf '%s' "Replacing with JMX Java properties ... "
+cp "${STAGING_DIR}/jmx.java.properties" "${SERVER_ROOT_DIR}/config/java.properties"
+_rc=${?}
+print_status ${_rc}
+test ${_rc} -ne 0 && exit 188
+
+printf '%s' "Apply new Java properties ... "
+"${SERVER_ROOT_DIR}/bin/dsjavaproperties"
+_rc=${?}
+print_status ${_rc}
+test ${_rc} -ne 0 && exit 188

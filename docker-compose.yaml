@@ -11,6 +11,9 @@ services:
       - HTTP_PORT=1080
       - HTTPS_PORT=1443
       - JMX_PORT=1689
+      - SERVER_PROFILE_URL=https://github.com/arnaudlacour/server-profile-pingdirerctory-jolokia.git
+      - SERVER_PROFILE_PATH=pd-conf
+      - SERVER_PROFILE_PARENT=
       # - RMI_PORT=5690
       # - ACTIVATION_PORT=5691
       # - EXTERNAL_IP=127.0.0.1
@@ -26,7 +29,7 @@ services:
     mem_swappiness: 0
     tmpfs: /run/secrets
     volumes:
-      - ${PWD}/pd-conf:/opt/in
+      # - ${PWD}/pd-conf:/opt/in
       - /tmp/wk:/opt/out
     ports:
       # export the LDAP prot
