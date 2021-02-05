@@ -1,22 +1,36 @@
 version: "2.4"
 services:
   pingdirectory:
-    image: pingidentity/pingdirectory:2009-7.3.0.7
+    image: pingidentity/pingdirectory:edge
     env_file:
       - ${HOME}/.pingidentity/devops
     environment:
-      # - VERBOSE=true
+      - VERBOSE=true
       - LDAP_PORT=1389
       - LDAPS_PORT=1636
       - HTTP_PORT=1080
       - HTTPS_PORT=1443
       - JMX_PORT=1689
-      - SERVER_PROFILE_URL=https://github.com/arnaudlacour/server-profile-pingdirerctory-jolokia.git
-      - SERVER_PROFILE_PATH=pd-conf
-      - SERVER_PROFILE_PARENT=
-      # - RMI_PORT=5690
-      # - ACTIVATION_PORT=5691
-      # - EXTERNAL_IP=127.0.0.1
+      - USER_BASE_DN=o=sync
+      - SERVER_PROFILE_URL_REDACT="false"
+      - SERVER_PROFILE_PD_URL=https://github.com/pingidentity/pingidentity-server-profiles.git
+      - SERVER_PROFILE_PATH=simple-sync/pingdirectory
+      - SERVER_PROFILE_PARENT=PD
+      - SERVER_PROFILE_PD_URL=https://github.com/arnaudlacour/server-profile-pingdirerctory-jolokia.git
+      - SERVER_PROFILE_PD_BRANCH=sync_8
+      - SERVER_PROFILE_PD_PATH=pd-conf
+      - SERVER_PROFILE_PD_PARENT=JOLOKIA
+      - SERVER_PROFILE_JOLOKIA_URL=https://github.com/arnaudlacour/server-profile-pingdirerctory-jolokia.git
+      - SERVER_PROFILE_JOLOKIA_BRANCH=sync_8
+      - SERVER_PROFILE_JOLOKIA_PATH=jolokia-conf
+      - SERVER_PROFILE_JOLOKIA_PARENT=SEC
+      - SERVER_PROFILE_SEC_URL=https://github.com/arnaudlacour/server-profile-pingdirerctory-jolokia.git
+      - SERVER_PROFILE_SEC_BRANCH=sync_8
+      - SERVER_PROFILE_SEC_PATH=sec-conf
+      - SERVER_PROFILE_SEC_PARENT=SHARED
+      - SERVER_PROFILE_SHARED_URL=https://github.com/arnaudlacour/server-profile-pingdirerctory-jolokia.git
+      - SERVER_PROFILE_SHARED_BRANCH=sync_8
+      - SERVER_PROFILE_SHARED_PATH=shared-conf
     ulimits:
       nproc:
         soft: 16384
@@ -30,7 +44,7 @@ services:
     tmpfs: /run/secrets
     volumes:
       # - ${PWD}/pd-conf:/opt/in
-      - /tmp/wk:/opt/out
+      - /tmp/wk/pd:/opt/out
     ports:
       # export the LDAP prot
       - "5389:1389"
@@ -40,13 +54,50 @@ services:
       - "5689:1689"
       # export the  HTTPS port
       - "5443:1443"
-      # expose the RMI port
-      # - "5690:5690"
-      # expose the activation port
-      # - "5691:5691"
-    # network_mode: host
     networks:
       - pingnet
+
+  pingdatasync:
+    image: pingidentity/pingdatasync:edge
+    environment:
+      - LDAP_PORT=1389
+      - LDAPS_PORT=1636
+      - HTTP_PORT=1080
+      - HTTPS_PORT=1443
+      - JMX_PORT=1689
+      - USER_BASE_DN=o=sync
+      - SERVER_PROFILE_URL_REDACT="false"
+      - SERVER_PROFILE_URL=https://github.com/pingidentity/pingidentity-server-profiles.git
+      - SERVER_PROFILE_PATH=simple-sync/pingdatasync
+      - SERVER_PROFILE_PARENT=JOLOKIA
+      - SERVER_PROFILE_JOLOKIA_URL=https://github.com/arnaudlacour/server-profile-pingdirerctory-jolokia.git
+      - SERVER_PROFILE_JOLOKIA_BRANCH=sync_8
+      - SERVER_PROFILE_JOLOKIA_PATH=jolokia-conf
+      - SERVER_PROFILE_JOLOKIA_PARENT=SEC
+      - SERVER_PROFILE_SEC_URL=https://github.com/arnaudlacour/server-profile-pingdirerctory-jolokia.git
+      - SERVER_PROFILE_SEC_BRANCH=sync_8
+      - SERVER_PROFILE_SEC_PATH=sec-conf
+      - SERVER_PROFILE_SEC_PARENT=SHARED
+      - SERVER_PROFILE_SHARED_URL=https://github.com/arnaudlacour/server-profile-pingdirerctory-jolokia.git
+      - SERVER_PROFILE_SHARED_BRANCH=sync_8
+      - SERVER_PROFILE_SHARED_PATH=shared-conf
+    env_file:
+      - ${HOME}/.pingidentity/devops
+    ulimits:
+      nproc:
+        soft: 16384
+        hard: 16384
+      nofile:
+        soft: 65535
+        hard: 65535
+    ports:
+      - "2636:636"
+      - "2443:443"
+    networks:
+      - pingnet
+    volumes:
+      - /tmp/wk/sync:/opt/out
+    #  - ${HOME}/projects/devops/pingidentity-server-profiles/simple-sync/pingdatasync:/opt/in
 
   pingdataconsole:
     image: pingidentity/pingdataconsole:edge
@@ -56,7 +107,6 @@ services:
     ports:
       - "6080:6080"
       - "6443:6443"
-    # network_mode: host
     networks:
       - pingnet
 
